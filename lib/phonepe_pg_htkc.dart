@@ -18,7 +18,7 @@ class PhonePeApiVariables{
 
 class PhonePeApiStrings{
 
-  static const String pgResponseUrl = "dev.mybabyconnect.app";
+  static const String pgResponseUrl = "hemantchandra.com/pg/response";
   static const String prodPayResponse = '/phonepe/response';
 
   /// PhonePe PG URLs
@@ -90,10 +90,11 @@ class PhonePeApiServices {
   static Future<PGPaymentStatusResponse?> checkTransactionStatus(
       String merchantTransactionId,{
         String merchantId = PhonePeApiStrings.uatMerchantId,
+        String pgResponseUrl = PhonePeApiStrings.pgResponseUrl,
         bool isUAT = true
       }) async {
     var response = await client.post(
-        Uri.https(PhonePeApiStrings.pgResponseUrl, PhonePeApiStrings.prodPayResponse), body: {
+        Uri.https(pgResponseUrl, PhonePeApiStrings.prodPayResponse), body: {
       PhonePeApiVariables.transactionId: merchantTransactionId,
       PhonePeApiVariables.merchantId: merchantId,
     });

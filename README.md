@@ -1,10 +1,10 @@
 PhonePe PG HTKC is a reusable Flutter package that integrate PhonePe Payment Gateway in any Flutter project.
 
-## Features
+# Features
 
 PhonePe payment gateway complete process for Flutter App with Payment Status.
 
-# Other Features Laravel response logics
+## Other Features Laravel response logics
 
 ```php
     public function response(Request $request)
@@ -26,7 +26,51 @@ PhonePe payment gateway complete process for Flutter App with Payment Status.
     }
 ```
 
-## Getting started
+## Laravel initiate payment logics
+
+```php
+    
+    public function phonePe()
+    {
+        $data = array (
+          'merchantId' => 'PGTESTPAYUAT',
+          'merchantTransactionId' => uniqid(),
+          'merchantUserId' => 'MERCHANTUSERID1',
+          'amount' => 100,
+          'redirectUrl' => route('response'),
+          'redirectMode' => 'POST',
+          'callbackUrl' => route('response'),
+          'mobileNumber' => '9999999999',
+          'paymentInstrument' =>
+          array (
+            'type' => 'PAY_PAGE',
+          ),
+        );
+
+        $encode = base64_encode(json_encode($data));
+
+        $saltKey = '099eb0cd-02cf-4e2a-8aca-3e6c6aff0399';
+        $saltIndex = 1;
+
+        $string = $encode.'/pg/v1/pay'.$saltKey;
+        $sha256 = hash('sha256',$string);
+
+        $finalXHeader = $sha256.'###'.$saltIndex;
+
+        $response = Curl::to('https://api.phonepe.com/apis/hermes/pg/v1/pay')
+                ->withHeader('Content-Type:application/json')
+                ->withHeader('X-VERIFY:'.$finalXHeader)
+                ->withData(json_encode(['request' => $encode]))
+                ->post();
+
+        $rData = json_decode($response);
+
+        return redirect()->to($rData->data->instrumentResponse->redirectInfo->url);
+
+    }
+```
+
+# Getting started
 
 Create your project and follow below instructions.
 
@@ -194,3 +238,7 @@ class PGPaymentController extends GetxController {
 }
 
 ```
+
+# Other instruction
+
+This package is currently not working properly in flutter web

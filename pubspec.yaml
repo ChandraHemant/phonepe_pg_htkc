@@ -1,10 +1,10 @@
 name: phonepe_pg_htkc
 description: PhonePe PG HTKC is a reusable Flutter package that integrate PhonePe Payment Gateway in any Flutter project.
-version: 1.0.1
+version: 1.0.2
 homepage: https://github.com/ChandraHemant/phonepe_pg_htkc
 
 environment:
-  sdk: '>=3.1.2 <4.0.0'
+  sdk: '>=3.0.5 <4.0.0'
   flutter: ">=1.17.0"
 
 dependencies:
